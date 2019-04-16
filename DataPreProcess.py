@@ -118,5 +118,5 @@ class DataPreProcessor:
 
 if __name__ == '__main__':
     dpp=DataPreProcessor('news_sohusite_xml_utf8.dat')
-    dpp.generateTrainAndTestDataSet('train.txt',40000000,'test.txt',400000)
+    dpp.generateTrainAndTestDataSet('train.txt',8000000,'test.txt',100000)
     dpp.printDsStatInfo()
