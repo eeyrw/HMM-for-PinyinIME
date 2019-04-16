@@ -57,9 +57,9 @@ class DataPreProcessor:
         plt.gca().set(title='训练集句子长度频率分布图', ylabel='频率')
         plt.subplot(122)
         plt.hist(testSegLenList, **kwargs,color='b',label='测试集')
-        plt.gca().set(title='测试集长度频率分布图', ylabel='频率')
+        plt.gca().set(title='测试集句子长度频率分布图', ylabel='频率')
         #plt.show()
-        plt.savefig("DataSetHistogram.pdf", dpi=150)
+        plt.savefig("DataSetHistogram.eps", dpi=150)
         with open('DataSetInfo.txt','w',encoding='utf-8') as f:
             f.write('TRA_LEN:%f\nT_MAX:%f\nT_MIN:%f\nT_MEAN:%f\nT_STD:%f\n'%(trainLen,trainMax,trainMin,trainMean,trainStd))
             f.write('\n\n')
