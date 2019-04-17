@@ -5,6 +5,7 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{bm}
+\usepackage{booktabs}
 \usepackage[backend=biber,backref=true%nature,% citestyle=gb7714−2015,backref=true%
 ]{biblatex}
 %参考文献数据源加载 
@@ -65,6 +66,32 @@ HMM的训练可以采用监督学习或者无监督学习\cite{李航统计学�
 \section{实验}
 参数估计使用的语料源自搜狗实验室提供的搜狐往年的新闻数据集\cite{SogouCS}。原始的数据集非常庞大，通过清洗整理后得到如表x所述的数据集。
 
+
+\begin{table}[]
+	\begin{tabular}{@{}ll@{}}
+		\toprule
+		句子长度 & 平均错误率 \\ \midrule
+		任意长度 & 29.7\% \\
+		\textless{}=5 & 22.4\% \\
+		\textgreater{}5 且 \textless{}=10 & 31.0\% \\
+		\textless{}11 且 \textless{}=20 & 36.2\% \\
+		\textgreater{}20 & 42.6\% \\ \bottomrule
+	\end{tabular}
+\end{table}
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+\begin{table}[]
+	\begin{tabular}{@{}ll@{}}
+		\toprule
+		句子长度                             & 样例                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           \\ \midrule
+		\textless{}=5                    & \begin{tabular}[c]{@{}l@{}}LEN: 2 ERROR:0.00\%\\     DIFF:  小  时\\ LEN: 5 ERROR:0.00\%\\     DIFF:  每  日  电  讯  报\\ LEN: 2 ERROR:50.00\%\\     DIFF:  万- 铢+ 株\\ LEN: 2 ERROR:0.00\%\\     DIFF:  上  周\\ LEN: 2 ERROR:0.00\%\\     DIFF:  汇  总\end{tabular}                                                                                                                                                                                                                                                                                                                                                                                   \\
+		\textgreater{}5 且 \textless{}=10 & \begin{tabular}[c]{@{}l@{}}LEN: 7 ERROR:71.43\%\\     DIFF:  表  现- 得- 畏- 首- 畏- 尾+ 的+ 位+ 授+ 为+ 未\\ LEN:10 ERROR:40.00\%\\     DIFF:  公  司  法  人- 代+ 带  表- 蔡- 义- 坚+ 才+ 艺+ 建  等\\ LEN: 8 ERROR:37.50\%\\     DIFF:  将  联  合- 通- 信+ 同+ 心  产  业- 报+ 保\\ LEN: 8 ERROR:12.50\%\\     DIFF:  专  卖  店  将  不  再- 专+ 转  卖\\ LEN: 7 ERROR:42.86\%\\     DIFF:  说  不  定  能- 制- 服- 他+ 只+ 负+ 她\end{tabular}                                                                                                                                                                                                                                                 \\
+		\textless{}11 且 \textless{}=20   & \begin{tabular}[c]{@{}l@{}}LEN:16 ERROR:31.25\%\\     DIFF:  柳  州  市- 阳- 光- 花+ 养+ 广+ 华  园- 游- 泳+ 有+ 用  场  有  限  责  任  公  司\\ LEN:16 ERROR:12.50\%\\     DIFF:  延  迟  等- 与+ 于  网  络  品  质  相  关  特  性  非  常  看- 重+ 中\\ LEN:12 ERROR:66.67\%\\     DIFF:- 应- 至+ 影+ 制  少- 与+ 于  一  种- 以- 上- 药- 物- 合+ 意+ 伤+ 要+ 务+ 和  用\\ LEN:11 ERROR:18.18\%\\     DIFF:- 每+ 美  外  包  一  次  就  要- 扒+ 把  一  层  皮\\ LEN:14 ERROR:42.86\%\\     DIFF:- 芷+ 之  江  西  路  街  道  会  同- 区- 城- 管- 执- 法+ 去+ 成+ 关+ 指+ 发  局\end{tabular}                                                                                                                                     \\
+		\textgreater{}20                 & \begin{tabular}[c]{@{}l@{}}LEN:23 ERROR:21.74\%\\     DIFF:  在  空  调  出  风  口  下  方  还  设  计  了  一  个  抽  屉  的- 形- 式+ 行+ 驶  的- 储- 物- 格+ 出+ 无+ 个\\ LEN:26 ERROR:15.38\%\\     DIFF:  老  女  排  国- 手+ 首  周- 晓+ 小  兰- 作- 为+ 坐+ 位  本  次  中  美  女  排  超  级  对  抗  赛  的  特  邀  嘉  宾\\ LEN:25 ERROR:24.00\%\\     DIFF:  杆  进  入  最  后  一  轮  的- 伍- 兹- 毋- 庸- 置- 疑+ 物+ 资+ 无+ 用+ 职+ 仪  在  决  赛  轮  面  临  着  两  难  境  地\\ LEN:21 ERROR:76.19\%\\     DIFF:  情  况  严  重  的+ 利+ 催- 李- 翠- 琼- 被- 好- 心- 的- 路- 人- 送- 到- 中- 医- 院- 抢- 救\\ LEN:21 ERROR:14.29\%\\     DIFF:  在  用  药  过  程  中  仍- 宜+ 以  定  期  进  行  尿  常  规  和- 肾- 功+ 深+ 宫  能  测  定\end{tabular} \\ \bottomrule
+	\end{tabular}
+\end{table}
 
 \begin{figure}
 	\centering
