@@ -72,7 +72,7 @@ HMM的训练可以采用监督学习或者无监督学习\cite{李航统计学�
 
 \section{实验}
 \subsection{数据集来源及处理}
-参数估计使用的语料源自搜狗实验室提供的搜狐往年的新闻数据集\cite{SogouCS}。原始的数据集非常庞大，通过清洗整理后得到如表\ref{table:dataset-stat}所述的数据集，其中的最大值、最小值、均值及方差是基于句子长度统计的。这些数据集的句子同时使用文字转拼音的自动化程序\cite{python-pinyin}产生对应的拼音。
+参数估计使用的语料源自搜狗实验室提供的搜狐往年的新闻数据集\cite{SogouCS}。原始的数据集非常庞大，通过清洗整理后得到如表\ref{table:dataset-stat}所述的数据集，其中的最大值、最小值、均值及方差是基于句子长度统计的。这些数据集的句子同时使用文字转拼音的自动化程序\cite{python-pinyin}产生对应的拼音。训练集和测试集选自原数据集的不同位置，没有交集。
 \begin{table}[H]
 	\centering
 \begin{tabular}{cccccc}
