@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper,draft]{ctexart}
+\documentclass[12pt,a4paper]{ctexart}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -6,6 +6,7 @@
 \usepackage{graphicx}
 \usepackage{bm}
 \usepackage{booktabs}
+\usepackage{draftwatermark}
 \usepackage[backend=biber,backref=true%nature,% citestyle=gb7714−2015,backref=true%
 ]{biblatex}
 %参考文献数据源加载 
@@ -21,10 +22,10 @@
 
 \maketitle
 \begin{abstract}
-本文尝试将隐马尔科夫模型应用于中文整句拼音输入中，给出了具体的模型和实际问题的对应关系以及参数估计的方法。同时还选用了现有的中文语料库进行了实验验证，取得了较好的效果。
+本文尝试将隐马尔科夫模型应用于中文整句拼音输入法，给出了具体的模型和实际问题的对应关系以及参数估计的方法。同时还选用了现有的中文语料库进行了实验验证，取得了较好的效果。
 \end{abstract}	
 \section{引言}
-隐马尔科夫模型（Hidden Markov Model，HMM）是一种应用于序列问题的统计学系模型，该模型描述了由隐藏的马尔科夫链随机生成观测序列的过程。HMM非常适合解决标注问题，故HMM在语音识别、自然语言处理、生物信息、模式识别等领域有广泛的应用，本文着眼于将HMM应用于中文拼音输入法。拼音输入法将拼音转换为对应汉字，其中更具有实用价值的是将连续的拼音输入转换为连续的句子。这是典型的序列问题，更为具体地，是一种序列标注问题，故应用HMM能较好的解决该问题。
+隐马尔科夫模型（Hidden Markov Model，HMM）是一种应用于序列问题的统计学系模型，该模型描述了由隐藏的马尔科夫链随机生成观测序列的过程。HMM非常适合解决标注问题，故HMM在语音识别、自然语言处理、生物信息、模式识别等领域有广泛的\cite{李航统计学习}，本文着眼于将HMM应用于中文拼音输入法。拼音输入法将拼音转换为对应汉字，其中更具有实用价值的是将连续的拼音输入转换为连续的句子。这是典型的序列问题，更为具体地，是一种序列标注问题，故应用HMM能较好的解决该问题。
 \section{问题描述}
 HMM描述了一个隐藏的马尔科夫链生成不可观测的状态随机序列，再由各个状态生成一个观测而产生观测随机序列的过程。HMM随机生成的状态序列成为状态序列（state sequence）；每一个状态生成一个观测，而由此产生的观测的随机序列成为观测序列（observation sequence）。故HMM可以由初始概率分布、状态转移概率分布以及观测概率分布确定，这三者对应的参数分别为初始状态概率向量$ \bm{\pi} $、状态转移概率矩阵$\bm{A}$及观测概率矩阵$\bm{B}$。由此HMM可以用三元组$ \lambda=(\bm{A},\bm{B},\bm{\pi}) $表示\cite{李航统计学习}。
 
@@ -72,7 +73,15 @@ HMM的训练可以采用监督学习或者无监督学习\cite{李航统计学�
 
 \section{实验}
 \subsection{数据集来源及处理}
-参数估计使用的语料源自搜狗实验室提供的搜狐往年的新闻数据集\cite{SogouCS}。原始的数据集非常庞大，通过清洗整理后得到如表\ref{table:dataset-stat}所述的数据集，其中的最大值、最小值、均值及方差是基于句子长度统计的。这些数据集的句子同时使用文字转拼音的自动化程序\cite{python-pinyin}产生对应的拼音。训练集和测试集选自原数据集的不同位置，没有交集。
+参数估计使用的语料源自搜狗实验室提供的搜狐往年的新闻数据集\cite{SogouCS}。原始的数据集非常庞大，通过清洗整理后得到如表\ref{table:dataset-stat}所述的数据集，其中的最大值、最小值、均值及方差是基于句子长度统计的；图\ref{fig:datasethistogram}给出了具体的句子长度频率分布，可以发现大部分样本的长度集中在30以内。这些数据集的句子同时使用文字转拼音的自动化程序\cite{python-pinyin}产生对应的拼音。训练集和测试集选自原数据集的不同位置，没有交集。
+\bigskip
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{DataSetHistogram}
+	\caption{数据集句子长度分布}
+	\label{fig:datasethistogram}
+\end{figure}
+\bigskip
 \begin{table}[H]
 	\centering
 \begin{tabular}{cccccc}
@@ -86,8 +95,19 @@ HMM的训练可以采用监督学习或者无监督学习\cite{李航统计学�
 \caption{实验数据集统计信息}
 \label{table:dataset-stat}
 \end{table}
-
+\clearpage
 \subsection{实验流程及结果}
+实验先使用训练集对HMM的参数进行估计，再使用测试集的数据进行测试，即使用测试集的拼音序列作为输入，用HMM给出预测的汉字序列并和测试集对应的序列做比较并量化差异。差异的量化定义为：
+\bigskip
+\[ \mbox{错误率}=\frac{\mbox{测试序列和预测序列不同的个数}}{\mbox{序列总长度}} \times 100\% \]
+
+\bigskip
+
+实验结果如表\ref{table:experiment-result}所示，其中根据不同长度的句子的结果进行了分组，这是因为考虑到输入法的日常应用场景，低于十个汉字的输入是最频繁的，所以对应的实验结果更具有实际意义。可以发现小于十个汉字的平均错误率在30\%上下，是一个较好的结果，具有使用价值。当句子长度大于10以后错误率也并未提高很多，这得益于选用的数据集数据量较大，即便是本来分布就比较少的长句子也能有足够的样本进行训练。
+表\ref{table:prediction-samples}给出了从实验结果中随机抽取的序列，可以发现整体表现还是可以接受。
+\bigskip
+\bigskip
+
 \begin{table}[H]
 	\centering
 	\begin{tabular}{@{}ll@{}}
@@ -102,16 +122,11 @@ HMM的训练可以采用监督学习或者无监督学习\cite{李航统计学�
 	\caption{实验结果}
 	\label{table:experiment-result}
 \end{table}
-实验先使用训练集对HMM的参数进行估计，再使用测试集的数据进行测试，即使用测试集的拼音序列作为输入，用HMM给出预测的汉字序列并和测试集对应的序列做比较并量化差异。差异的量化定义为：
-\[ \mbox{错误率}=\frac{\mbox{测试序列和预测序列不同的个数}}{\mbox{序列总长度}} \times 100\% \]
-实验结果如表\ref{table:experiment-result}所示，其中根据不同长度的句子的结果进行了分组，这是因为考虑到输入法的日常应用场景，低于十个汉字的输入是最频繁的，所以对应的实验结果更具有实际意义。可以发现小于十个汉字的平均错误率在30\%上下，是一个较好的结果，具有使用价值。当句子长度大于10以后错误率也并未提高很多，这得益于选用的数据集数据量较大，即便是本来分布就比较少的长句子也能有足够的样本进行训练。
-表\ref{table:prediction-samples}给出了从实验结果中随机抽取的序列，可以发现整体表现还是可以接受。
 
 
 
-% Please add the following required packages to your document preamble:
-% \usepackage{booktabs}
-\begin{table}[]
+\clearpage
+\begin{table}[H]
 	\centering
 	\begin{tabular}{@{}ll@{}}
 		\toprule
@@ -124,9 +139,10 @@ HMM的训练可以采用监督学习或者无监督学习\cite{李航统计学�
 	\caption{预测及真值样例}
 	\label{table:prediction-samples}
 \end{table}
+\clearpage
 
-\section{总结}
-本文使用了HMM模型进行了
+\section{总结及展望}
+本文使用了HMM模型建模了拼音序列转汉字序列的标注问题，给出了具体的实验方案并开展了实验，得到近30\%错误率的表现，具有很高的实用价值。模型还有很大的改进空间，例如在HMM中可的状态序列可以用二阶马尔科夫链描述，相对于只考虑前后关系的一阶马尔科夫链会有更好的表现。
 
 
 \printbibliography[heading=bibliography,title=参考文献]
